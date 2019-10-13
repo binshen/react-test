@@ -1,26 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Suspense} from 'react';
+import {Router} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router';
+import {history, routes} from './router';
+import Loading from './components/Loading';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+function getRouterByRoutes(routes){
+    const renderedRoutesList = [];
+    const renderRoutes = (routes,parentPath)=>{
+        Array.isArray(routes)&&routes.forEach((route)=>{
+            const {path,redirect,children,layout,component} = route;
+            if(redirect){
+                renderedRoutesList.push(<Redirect key={`${parentPath}${path}`} exact from={path} to={`${parentPath}${redirect}`}/>)
+            }
+            if(component){
+                renderedRoutesList.push(
+                    layout?<Route
+                            key={`${parentPath}${path}`}
+                            exact path={`${parentPath}${path}`}
+                            render={(props)=>React.createElement(layout,props,React.createElement(component,props))} />:
+                        <Route
+                            key={`${parentPath}${path}`}
+                            exact
+                            path={`${parentPath}${path}`}
+                            component={component}/>)
+            }
+            if(Array.isArray(children)&&children.length>0){
+                renderRoutes(children,path)
+            }
+        });
+    }
+    renderRoutes(routes,'')
+    return renderedRoutesList;
 }
 
+class App extends React.PureComponent{
+  render(){
+    return (
+        <Router history={history}>
+          <Suspense fallback={<Loading/>}>
+            <Switch>
+              {getRouterByRoutes(routes)}
+            </Switch>
+          </Suspense>
+        </Router>
+    )
+  }
+}
 export default App;
