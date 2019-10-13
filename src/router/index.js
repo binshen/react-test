@@ -9,7 +9,7 @@ export const history = createHistory();
 export const routes = [
     {
         path:'/',
-        redirect:'/'
+        redirect:'/test/clock'
     },
     {
         path:'/test',
