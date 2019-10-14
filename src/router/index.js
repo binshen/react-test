@@ -1,6 +1,9 @@
-import React from 'react'
+import React from 'react';
 import createHistory from 'history/createBrowserHistory';
 
+import Test from '../components/Test';
+import Test2 from '../components/Test2';
+import Test3 from '../components/Test3';
 import Clock from '../components/Clock';
 import NotFound from '../views/Exception/404';
 
@@ -8,19 +11,27 @@ export const history = createHistory();
 
 export const routes = [
     {
-        path:'/',
-        redirect:'/test/clock'
+        path: '/',
+        redirect: '/test/clock'
     },
     {
-        path:'/test',
-        redirect:'/test',
-        children:[{
-            path:'/clock',
-            component:Clock
+        path: '/test',
+        children: [{
+            path: '/clock',
+            component: Clock
+        }, {
+            path: '/test',
+            component: Test
+        }, {
+            path: '/test2',
+            component: Test2
+        }, {
+            path: '/test3',
+            component: Test3
         }]
     },
     {
-        path:'*',
-        component:NotFound
+        path: '*',
+        component: NotFound
     }
-]
+];
