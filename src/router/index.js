@@ -4,6 +4,7 @@ import createHistory from 'history/createBrowserHistory';
 import Test from '../components/Test';
 import Test2 from '../components/Test2';
 import Test3 from '../components/Test3';
+import Test4 from '../components/Test4';
 import Clock from '../components/Clock';
 import NotFound from '../views/Exception/404';
 
@@ -28,6 +29,9 @@ export const routes = [
         }, {
             path: '/test3',
             component: Test3
+        }, {
+            path: '/test4',
+            component: Test4
         }]
     },
     {
